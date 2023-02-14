@@ -34,13 +34,6 @@ flags.DEFINE_integer("dupe_factor", 10, "Number of times to duplicate the input 
 # flags.DEFINE_integer("sliding_step", 30, "sliding window step size.")
 flags.DEFINE_string("data_dir", './data/', "data dir.")
 flags.DEFINE_string("vocab_filename", "vocab", "vocab filename")
-flags.DEFINE_bool("total_drop", False, "whether to drop")
-flags.DEFINE_bool("total_drop_random", False, "whether to drop totally and randomly")
-flags.DEFINE_bool("drop", False, "whether to drop")
-flags.DEFINE_bool("iter_drop", False, "whether to drop")
-flags.DEFINE_float("beta", 0.0, "penalty for drop")
-flags.DEFINE_float("drop_ratio", 0.5, "ratio to drop repetitive and frequent trans")
-flags.DEFINE_bool("random_drop", False, "wether to drop randomly")
 
 flags.DEFINE_string("bizdate", None, "the signature of running experiments")
 flags.DEFINE_string("source_bizdate", None, "signature of previous data")
@@ -167,57 +160,26 @@ def gen_samples(sequences,
                 masked_lm_prob,
                 max_predictions_per_seq,
                 pool_size,
-                rng,
-                force_head=False):
+                rng):
     instances = []
     # create train
-    if force_head:
-        for step in range(dupe_factor):
-            start = time.time()
-            for tokens in sequences:
-                (address, tokens, masked_lm_positions,
-                 masked_lm_labels) = create_masked_lm_predictions_force_head(tokens)
-                instance = TrainingInstance(
-                    address=address,
-                    tokens=tokens,
-                    masked_lm_positions=masked_lm_positions,
-                    masked_lm_labels=masked_lm_labels)
-                instances.append(instance)
-            end = time.time()
-            cost = end - start
-            print("step=%d, time=%.2f" % (step, cost))
-        print("=======Finish========")
-
-    else:
-        for step in range(dupe_factor):
-            start = time.time()
-            for tokens in sequences:
-                (address, tokens, masked_lm_positions, masked_lm_labels, masked_lm_erc20_nums) = \
-                    create_masked_lm_predictions(tokens, masked_lm_prob, max_predictions_per_seq, rng)
-                instance = TrainingInstance(
-                    address=address,
-                    tokens=tokens,
-                    masked_lm_positions=masked_lm_positions,
-                    masked_lm_labels=masked_lm_labels,
-                    masked_lm_erc20_nums=masked_lm_erc20_nums)
-                instances.append(instance)
-            end = time.time()
-            cost = end - start
-            print("step=%d, time=%.2f" % (step, cost))
-        print("=======Finish========")
+    for step in range(dupe_factor):
+        start = time.time()
+        for tokens in sequences:
+            (address, tokens, masked_lm_positions, masked_lm_labels, masked_lm_erc20_nums) = \
+                create_masked_lm_predictions(tokens, masked_lm_prob, max_predictions_per_seq, rng)
+            instance = TrainingInstance(
+                address=address,
+                tokens=tokens,
+                masked_lm_positions=masked_lm_positions,
+                masked_lm_labels=masked_lm_labels,
+                masked_lm_erc20_nums=masked_lm_erc20_nums)
+            instances.append(instance)
+        end = time.time()
+        cost = end - start
+        print("step=%d, time=%.2f" % (step, cost))
+    print("=======Finish========")
     return instances
-
-
-def create_masked_lm_predictions_force_head(tokens):
-    """Creates the predictions for the masked LM objective."""
-    first_index = 0
-    address = tokens[0][0]
-    output_tokens = [list(i) for i in tokens]  # note that change the value of output_tokens will also change tokens
-    output_tokens[first_index] = ["[MASK]", 0, 0, 0, 0, 0]
-    masked_lm_positions = [first_index]
-    masked_lm_labels = [tokens[first_index][0]]
-
-    return (address, output_tokens, masked_lm_positions, masked_lm_labels)
 
 
 def create_masked_lm_predictions(tokens, masked_lm_prob,
@@ -507,8 +469,7 @@ def main():
                                             masked_lm_prob=FLAGS.masked_lm_prob,
                                             max_predictions_per_seq=MAX_PREDICTIONS_PER_SEQ,
                                             pool_size=FLAGS.pool_size,
-                                            rng=rng,
-                                            force_head=False)
+                                            rng=rng)
 
         eval_write_instance = eval_normal_instances
         rng.shuffle(eval_write_instance)
@@ -526,8 +487,7 @@ def main():
                                    masked_lm_prob=FLAGS.masked_lm_prob,
                                    max_predictions_per_seq=MAX_PREDICTIONS_PER_SEQ,
                                    pool_size=FLAGS.pool_size,
-                                   rng=rng,
-                                   force_head=False)
+                                   rng=rng)
 
     write_instance = normal_instances
     rng.shuffle(write_instance)

@@ -34,13 +34,6 @@ flags.DEFINE_integer("dupe_factor", 10, "Number of times to duplicate the input 
 # flags.DEFINE_integer("sliding_step", 30, "sliding window step size.")
 flags.DEFINE_string("data_dir", './data/', "data dir.")
 flags.DEFINE_string("vocab_filename", "vocab", "vocab filename")
-flags.DEFINE_bool("total_drop", False, "whether to drop")
-flags.DEFINE_bool("total_drop_random", False, "whether to drop totally and randomly")
-flags.DEFINE_bool("drop", False, "whether to drop")
-flags.DEFINE_bool("iter_drop", False, "whether to drop")
-flags.DEFINE_float("beta", 0.0, "penalty for drop")
-flags.DEFINE_float("drop_ratio", 0.5, "ratio to drop repetitive and frequent trans")
-flags.DEFINE_bool("random_drop", False, "wether to drop randomly")
 
 flags.DEFINE_string("bizdate", None, "the signature of running experiments")
 flags.DEFINE_string("source_bizdate", None, "signature of previous data")
@@ -181,8 +174,7 @@ def gen_samples(sequences,
                 masked_lm_prob,
                 max_predictions_per_seq,
                 pool_size,
-                rng,
-                force_head=False):
+                rng):
     instances = []
     # create train
     for step in range(dupe_factor):
@@ -627,8 +619,7 @@ def main():
                                             masked_lm_prob=FLAGS.masked_lm_prob,
                                             max_predictions_per_seq=MAX_PREDICTIONS_PER_SEQ,
                                             pool_size=FLAGS.pool_size,
-                                            rng=rng,
-                                            force_head=False)
+                                            rng=rng)
 
         eval_write_instance = eval_normal_instances
         rng.shuffle(eval_write_instance)
@@ -646,8 +637,7 @@ def main():
                                    masked_lm_prob=FLAGS.masked_lm_prob,
                                    max_predictions_per_seq=MAX_PREDICTIONS_PER_SEQ,
                                    pool_size=FLAGS.pool_size,
-                                   rng=rng,
-                                   force_head=False)
+                                   rng=rng)
 
     write_instance = normal_instances
     rng.shuffle(write_instance)

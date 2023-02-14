@@ -34,13 +34,6 @@ flags.DEFINE_integer("dupe_factor", 10, "Number of times to duplicate the input 
 # flags.DEFINE_integer("sliding_step", 30, "sliding window step size.")
 flags.DEFINE_string("data_dir", './data/', "data dir.")
 flags.DEFINE_string("vocab_filename", "vocab", "vocab filename")
-flags.DEFINE_bool("total_drop", False, "whether to drop")
-flags.DEFINE_bool("total_drop_random", False, "whether to drop totally and randomly")
-flags.DEFINE_bool("drop", False, "whether to drop")
-flags.DEFINE_bool("iter_drop", False, "whether to drop")
-flags.DEFINE_float("beta", 0.0, "penalty for drop")
-flags.DEFINE_float("drop_ratio", 0.5, "ratio to drop repetitive and frequent trans")
-flags.DEFINE_bool("random_drop", False, "wether to drop randomly")
 
 flags.DEFINE_string("bizdate", None, "the signature of running experiments")
 flags.DEFINE_string("source_bizdate", None, "signature of previous data")
@@ -143,58 +136,26 @@ def gen_samples(sequences,
                 masked_lm_prob,
                 max_predictions_per_seq,
                 pool_size,
-                rng,
-                force_head=False):
+                rng):
     instances = []
     # create train
-    if force_head:
-        for step in range(dupe_factor):
-            start = time.time()
-            for tokens in sequences:
-                (address, tokens, masked_lm_positions,
-                 masked_lm_labels) = create_masked_lm_predictions_force_head(tokens)
-                instance = TrainingInstance(
-                    address=address,
-                    tokens=tokens,
-                    masked_lm_positions=masked_lm_positions,
-                    masked_lm_labels=masked_lm_labels)
-                instances.append(instance)
-            end = time.time()
-            cost = end - start
-            print("step=%d, time=%.2f" % (step, cost))
-        print("=======Finish========")
-
-    else:
-        for step in range(dupe_factor):
-            start = time.time()
-            for tokens in sequences:
-                (address, tokens, masked_lm_positions,
-                 masked_lm_labels) = create_masked_lm_predictions(
-                    tokens, masked_lm_prob, max_predictions_per_seq, rng)
-                instance = TrainingInstance(
-                    address=address,
-                    tokens=tokens,
-                    masked_lm_positions=masked_lm_positions,
-                    masked_lm_labels=masked_lm_labels)
-                instances.append(instance)
-            end = time.time()
-            cost = end - start
-            print("step=%d, time=%.2f" % (step, cost))
-        print("=======Finish========")
+    for step in range(dupe_factor):
+        start = time.time()
+        for tokens in sequences:
+            (address, tokens, masked_lm_positions,
+             masked_lm_labels) = create_masked_lm_predictions(
+                tokens, masked_lm_prob, max_predictions_per_seq, rng)
+            instance = TrainingInstance(
+                address=address,
+                tokens=tokens,
+                masked_lm_positions=masked_lm_positions,
+                masked_lm_labels=masked_lm_labels)
+            instances.append(instance)
+        end = time.time()
+        cost = end - start
+        print("step=%d, time=%.2f" % (step, cost))
+    print("=======Finish========")
     return instances
-
-
-def create_masked_lm_predictions_force_head(tokens):
-    """Creates the predictions for the masked LM objective."""
-    first_index = 0
-    address = tokens[0][0]
-    output_tokens = [list(i) for i in tokens]  # note that change the value of output_tokens will also change tokens
-    output_tokens[first_index] = ["[MASK]", 0, 0, 0, 0, 0]
-    masked_lm_positions = [first_index]
-    masked_lm_labels = [tokens[first_index][0]]
-
-    return (address, output_tokens, masked_lm_positions, masked_lm_labels)
-
 
 def create_masked_lm_predictions(tokens, masked_lm_prob,
                                  max_predictions_per_seq, rng):
@@ -366,117 +327,6 @@ def write_instance_to_example_files(instances, max_seq_length,
     tf.logging.info("Wrote %d total instances", total_written)
 
 
-def repeat_drop(eoa2seq, vocab, beta, ratio):
-    """
-    ratio: the ratio of reduce transaction
-    beta: the penalty for sampling, if beta is too huge, there is overflow
-    """
-    new_eoa2seq = {}
-
-    for eoa, seq in eoa2seq.items():
-
-        filter_num = int(ratio * len(seq))
-        # calculate drop frequency after each drop
-        address_list = list(map(lambda x: x[0], seq))
-        freq = {}
-        for addr in address_list:
-            try:
-                freq[addr] += 1
-            except:
-                freq[addr] = 1
-
-        frequency_list = [freq[addr] for addr in address_list]
-        if np.max(frequency_list) == 1:
-            # if there is no repetitiveness in the sequence
-            new_eoa2seq[eoa] = seq
-            continue
-
-        frequency_list = list(map(lambda x: pow(x, beta), frequency_list))
-        denominator = np.sum(frequency_list)
-        proba_list = frequency_list / denominator
-        drop_idx = set(np.random.choice(range(len(seq)), filter_num, p=proba_list, replace=False))
-
-        new_seq = []
-        for i in range(len(seq)):
-            if i not in drop_idx:
-                new_seq.append(seq[i])
-
-        new_eoa2seq[eoa] = new_seq
-
-    return new_eoa2seq
-
-def random_drop(eoa2seq, ratio=0.5):
-
-    new_eoa2seq = {}
-    for eoa, seq in eoa2seq.items():
-        filter_num = int(ratio * len(seq))
-
-        if len(seq) <= 2:
-            new_eoa2seq[eoa] = seq
-
-        else:
-            remain_idx = set(np.random.choice(range(len(seq)), len(seq) - filter_num, replace=False))
-            new_seq = []
-
-            for id in remain_idx:
-                new_seq.append(seq[id])
-
-            new_seq = sorted(new_seq, key=functools.cmp_to_key(cmp_udf_reverse))
-            new_eoa2seq[eoa] = new_seq
-
-    return new_eoa2seq
-
-
-def iter_drop(eoa2seq, vocab, beta, ratio):
-    """
-    ratio: the ratio of reduce transaction
-    beta: the penalty for sampling
-    """
-    pbar = tqdm(total=len(eoa2seq))
-
-    for eoa, seq in eoa2seq.items():
-
-        pbar.update(1)
-        filter_num = int(ratio * len(seq))
-        # calculate drop frequency after each drop
-
-        for i in range(filter_num):
-            address_list = list(map(lambda x: x[0], seq))
-            freq = {}
-            for addr in address_list:
-                try:
-                    freq[addr] += 1
-                except:
-                    freq[addr] = 1
-
-            frequency_list = [freq[addr] for addr in address_list]
-            frequency_list = list(map(lambda x: pow(x, beta), frequency_list))
-            denominator = np.sum(frequency_list)
-            proba_list = frequency_list / denominator
-            seq_idx = np.random.choice(range(len(seq)), p=proba_list)
-            del seq[seq_idx]
-
-    return eoa2seq
-
-
-def total_repeat_drop(eoa2seq):
-    """
-    totally drop the repeat transaction based on time.
-    """
-    new_eoa2seq = {}
-    for eoa, seq in eoa2seq.items():
-        new_seq = []
-        exist_addr = set()
-        for trans in seq:
-            if trans[0] not in exist_addr:
-                exist_addr.add(trans[0])
-                new_seq.append(trans)
-
-        new_eoa2seq[eoa] = new_seq
-
-    return new_eoa2seq
-
-
 def cmp_udf_reverse(x1, x2):
     time1 = int(x1[2])
     time2 = int(x2[2])
@@ -487,32 +337,6 @@ def cmp_udf_reverse(x1, x2):
         return -1
     else:
         return 0
-
-
-def total_repeat_drop_random(eoa2seq):
-    """
-    totally drop the repeat transaction randomly.
-    """
-    new_eoa2seq = {}
-    for eoa, seq in eoa2seq.items():
-        new_seq = []
-        addr2trans_list = {}
-        for trans in seq:
-            try:
-                addr2trans_list[trans[0]].append(trans)
-            except:
-                addr2trans_list[trans[0]] = [trans]
-
-        for addr in addr2trans_list.keys():
-            trans_list = addr2trans_list[addr]
-            idx = np.random.choice(len(trans_list))
-            trans = trans_list[idx]
-            new_seq.append(trans)
-
-        new_seq = sorted(new_seq, key=functools.cmp_to_key(cmp_udf_reverse))
-        new_eoa2seq[eoa] = new_seq
-
-    return new_eoa2seq
 
 
 def main():
@@ -533,34 +357,7 @@ def main():
     with open(vocab_file_name, 'wb') as output_file:
         pkl.dump(vocab, output_file, protocol=2)
 
-
     print("===========Original===========")
-    length_list = []
-    for eoa in eoa2seq.keys():
-        seq = eoa2seq[eoa]
-        length_list.append(len(seq))
-
-    length_list = np.array(length_list)
-    print("Median:", np.median(length_list))
-    print("Mean:", np.mean(length_list))
-    print("Seq num:", len(length_list))
-
-    if FLAGS.drop:
-        eoa2seq = repeat_drop(eoa2seq, None, FLAGS.beta, FLAGS.drop_ratio)
-
-    if FLAGS.random_drop:
-        eoa2seq = random_drop(eoa2seq, FLAGS.drop_ratio)
-
-    elif FLAGS.total_drop:
-        eoa2seq = total_repeat_drop(eoa2seq)
-
-    elif FLAGS.total_drop_random:
-        eoa2seq = total_repeat_drop_random(eoa2seq)
-
-    elif FLAGS.iter_drop:
-        eoa2seq = iter_drop(eoa2seq, None, FLAGS.beta, FLAGS.drop_ratio)
-
-    print("==========After Reduce==========")
     length_list = []
     for eoa in eoa2seq.keys():
         seq = eoa2seq[eoa]
@@ -620,8 +417,7 @@ def main():
                                             masked_lm_prob=FLAGS.masked_lm_prob,
                                             max_predictions_per_seq=MAX_PREDICTIONS_PER_SEQ,
                                             pool_size=FLAGS.pool_size,
-                                            rng=rng,
-                                            force_head=False)
+                                            rng=rng)
 
         eval_write_instance = eval_normal_instances
         rng.shuffle(eval_write_instance)
@@ -639,8 +435,7 @@ def main():
                                    masked_lm_prob=FLAGS.masked_lm_prob,
                                    max_predictions_per_seq=MAX_PREDICTIONS_PER_SEQ,
                                    pool_size=FLAGS.pool_size,
-                                   rng=rng,
-                                   force_head=False)
+                                   rng=rng)
 
     write_instance = normal_instances
     rng.shuffle(write_instance)
