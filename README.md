@@ -1,6 +1,6 @@
 # BERT4ETH
 
-This is the code and data of the paper "BERT4ETH: Pre-train Transformer for Ethereum Fraud Detection" (WWW2023).
+This is the code and data of the paper "BERT4ETH: A Pre-trained Transformer for Ethereum Fraud Detection", accepted by the Web conference (WWW) 2023.
 
 
 ## Getting Start
