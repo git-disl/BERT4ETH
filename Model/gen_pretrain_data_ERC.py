@@ -25,13 +25,11 @@ FLAGS = flags.FLAGS
 
 flags.DEFINE_integer("pool_size", 10, "multiprocesses pool size.")
 flags.DEFINE_integer("max_seq_length", 50, "max sequence length.")
-# flags.DEFINE_integer("max_predictions_per_seq", 40, "max_predictions_per_seq.")
 flags.DEFINE_float("masked_lm_prob", 0.8, "Masked LM probability.")
 flags.DEFINE_float("mask_prob", 1.0, "mask probabaility")
 flags.DEFINE_bool("do_eval", False, "")
 flags.DEFINE_bool("do_embed", True, "")
 flags.DEFINE_integer("dupe_factor", 10, "Number of times to duplicate the input data (with different masks).")
-# flags.DEFINE_integer("sliding_step", 30, "sliding window step size.")
 flags.DEFINE_string("data_dir", './data/', "data dir.")
 flags.DEFINE_string("vocab_filename", "vocab", "vocab filename")
 

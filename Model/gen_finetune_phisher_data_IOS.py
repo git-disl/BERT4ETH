@@ -28,7 +28,6 @@ rng = random.Random(random_seed)
 
 ## parameters
 flags.DEFINE_integer("max_seq_length", 50, "max sequence length.")
-# flags.DEFINE_integer("sliding_step", 30, "sliding window step size.")
 flags.DEFINE_string("data_dir", './data/', "data dir.")
 flags.DEFINE_string("dataset_name", 'eth',"dataset name.")
 flags.DEFINE_string("vocab_filename", "vocab", "vocab filename")
