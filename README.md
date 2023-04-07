@@ -41,7 +41,8 @@ The total volume of unzipped dataset is quite huge (more than 15GB).
 cd Model/bert4eth;
 python gen_seq.py --phisher=True \
                   --deanon=True \ 
-                  --mev=True \ 
+                  --mev=True \
+                  --dup=True \
                   --bizdate=xxx
                   
 python gen_seq_erc20.py;
@@ -51,7 +52,7 @@ python gen_seq_erc20.py;
 
 #### Step 0: Model Configuration
 
-The configuration file is "Model/bert4eth/bert_config_eth_64.json"
+The configuration file is "Model/BERT4ETH/bert_config.json"
 ```
 {
   "attention_probs_dropout_prob": 0.2,
@@ -74,10 +75,8 @@ The configuration file is "Model/bert4eth/bert_config_eth_64.json"
 
 ```sh
 python gen_pretrain_data.py --bizdate=xxx \
-                            --max_seq_length=50 \
+                            --max_seq_length=100 \
                             --masked_lm_prob=0.8 \
-                            --max_predictions_per_seq=40 \
-                            --sliding_step=30 \
                             --dupe_factor=10 \
                             --do_eval=False
 ```
@@ -86,8 +85,7 @@ python gen_pretrain_data.py --bizdate=xxx \
 
 ```sh
 python run_pretrain.py --bizdate=xxx \
-                       --max_seq_length=50 \
-                       --max_predictions_per_seq=40 \
+                       --max_seq_length=100 \
                        --masked_lm_prob=0.8 \
                        --epoch=5 \
                        --batch_size=256 \
@@ -106,7 +104,6 @@ python run_pretrain.py --bizdate=xxx \
 |----------------------------|------------------------------------------------------------------------------------|
 | `bizdate`                  | The signature for this experiment run.                                             |
 | `max_seq_length`           | The maximum length of BERT4ETH.                                                    |
-| `max_predictions_per_seq`  | The maximum number of masked addresses in one sequence.                            |
 | `masked_lm_prob`           | The probability of masking an address.                                             |
 | `epochs`                   | Number of training epochs, default = `5`.                                          |
 | `batch_size`               | Batch size, default = `256`.                                                       |
@@ -129,24 +126,24 @@ python run_embed.py --bizdate=xxx \
                     --init_checkpoint=xxx/xxx \ 
                     --neg_strategy=zip \
                     --neg_sample_num=5000 \
-                    --do_eval=True \
+                    --do_eval=True 
 ```
 
 ### Testing:
 
-#### Phshing Account Detection
+#### Phishing Account Detection
+```sh
+cd BERT4ETH/Model;
+python run_phisher.py --algo=bert4eth
+```
+
+#### De-anonymization (ENS dataset)
+
 ```sh
 cd BERT4ETH/Model;
 python run_dean.py --metric=euclidean \
                    --algo=bert4eth
-``` 
-
-#### De-anonymization
-
-```sh
-cd BERT4ETH/Model;
-python run_phisher.py --algo=bert4eth
-``` 
+```
 
 #### MEV Bot Detection
 
