@@ -311,8 +311,8 @@ def main():
 
     if FLAGS.tornado:
         print("Add tornado...")
-        tornado_in = open("/home/sihao/CLR4ETH/Data/tornado_trans_in_removed.csv", "r")
-        tornado_out = open("/home/sihao/CLR4ETH/Data/tornado_trans_out_removed.csv", "r")
+        tornado_in = open(os.path.join(FLAGS.data_dir, "tornado_trans_in_removed.csv", "r"))
+        tornado_out = open(os.path.join(FLAGS.data_dir, "tornado_trans_out_removed.csv", "r"))
         tornado_eoa2seq_in, tornado_eoa2seq_out = load_data(tornado_in, tornado_out)
 
         if FLAGS.dup:

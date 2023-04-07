@@ -1,6 +1,6 @@
 # BERT4ETH
 
-This is the code and data of the paper "BERT4ETH: A Pre-trained Transformer for Ethereum Fraud Detection", accepted by the Web conference (WWW) 2023.
+This is the code and data of the paper [BERT4ETH: A Pre-trained Transformer for Ethereum Fraud Detection](https://arxiv.org/abs/2303.18138), accepted by the ACM Web conference (WWW) 2023.
 
 
 ## Getting Start
@@ -16,7 +16,9 @@ This is the code and data of the paper "BERT4ETH: A Pre-trained Transformer for 
 * Transaction Dataset:
 * * [Phishing Account](https://drive.google.com/file/d/11UAhLOcffzLyPhdsIqRuFsJNSqNvrNJf/view?usp=sharing)
 
-* * [De-anonymization](https://drive.google.com/file/d/1Yveis90jCx-nIA6pUL_4SUezMsVJr8dp/view?usp=sharing)
+* * [De-anonymization(ENS)](https://drive.google.com/file/d/1Yveis90jCx-nIA6pUL_4SUezMsVJr8dp/view?usp=sharing)
+
+* * [De-anonymization(Tornado)]()
 
 * * [MEV Bot](https://drive.google.com/file/d/10br9Xki_E443MJzGzQHQqLGds-uuGTRU/view?usp=sharing)
 
