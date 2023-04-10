@@ -40,8 +40,6 @@ Advanced features (In/out separation and ERC20 log) make the model not very effi
 
 #### Step 3: Transaction Sequence Generation
 
-(In Step 3 we apply the transaction de-duplication strategy.)
-
 ```sh
 cd Model/bert4eth;
 python gen_seq.py --phisher=True \
