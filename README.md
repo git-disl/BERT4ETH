@@ -28,7 +28,7 @@ This is the code and data of the paper [BERT4ETH: A Pre-trained Transformer for 
 
 
 ```sh
-cd BERT4ETH/Data;
+cd BERT4ETH/Data; # Labels are already included
 unzip ...;
 ``` 
 The total volume of unzipped dataset is quite huge (more than 15GB).
@@ -48,10 +48,11 @@ python gen_seq.py --phisher=True \
                   --deanon=True \ 
                   --mev=True \
                   --dup=True \
-                  --bizdate=xxx
-                  
-python gen_seq_erc20.py;
-``` 
+                  --dataset=1M \
+                  --bizdate=bert4eth_1M_min3_dup
+
+```
+
 
 ### Pre-training
 
@@ -79,12 +80,14 @@ The configuration file is "Model/BERT4ETH/bert_config.json"
 [//]: # (&#40;Masking, I/O separation and ERC20 log&#41;)
 
 ```sh
-python gen_pretrain_data.py --bizdate=xxx \
-                            --max_seq_length=100 \
-                            --masked_lm_prob=0.8 \
+python gen_pretrain_data.py --source_bizdate=bert4eth_1M_min3_dup  \
+                            --bizdate=bert4eth_1M_min3_dup_seq100_mask80  \ 
+                            --max_seq_length=100  \
                             --dupe_factor=10 \
+                            --masked_lm_prob=0.8 \
                             --do_eval=False
 ```
+
 
 #### Step 2: Pre-train BERT4ETH Model
 
