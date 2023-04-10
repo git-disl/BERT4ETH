@@ -139,7 +139,7 @@ python run_embed.py --bizdate=bert4eth_1M_min3_dup_seq100_mask80 \
                     --neg_share=True 
 ```
 
-### Step 4: Testing on the account representation
+### Testing on the account representation
 
 #### Phishing Account Detection
 ```sh
@@ -170,12 +170,14 @@ python run_dean_Tornado.py --metric=euclidean \
 ### Fine-tuning on the phishing account detection
 
 ```sh
+cd BERT4ETH/Model;
 python gen_finetune_phisher_data.py --bizdate=bert4eth_1M_min3_dup_seq100_mask80 \ 
                                     --source_bizdate=bert4eth_1M_min3_dup \
                                     --max_seq_length=100 
 ```
 
 ```sh
+cd BERT4ETH/Model/BERT4ETH
 python run_finetune_phisher.py --bizdate=bert4eth_1M_min3_dup_seq100_mask80 \ 
                                --max_seq_length=100 --checkpointDir=tmp
 ```
