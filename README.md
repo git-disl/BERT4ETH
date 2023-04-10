@@ -1,6 +1,6 @@
 # BERT4ETH
 
-This is the code and data of the paper [BERT4ETH: A Pre-trained Transformer for Ethereum Fraud Detection](https://arxiv.org/abs/2303.18138), accepted by the ACM Web conference (WWW) 2023.
+This is the repo for the code and datasets used in the paper [BERT4ETH: A Pre-trained Transformer for Ethereum Fraud Detection](https://arxiv.org/abs/2303.18138), which has been accepted by the ACM Web conference (WWW) 2023.
 
 
 ## Getting Start
@@ -35,7 +35,7 @@ The total volume of unzipped dataset is quite huge (more than 15GB).
 
 If you want to run the basic BERT4ETH model, it is no need to download the ERC-20 log dataset.
 
-Advanced features (In/out separation and ERC20 log) make the model not very efficiency..
+Advanced features (In/out separation and ERC20 log) make the model not very efficient..
 
 
 #### Step 3: Transaction Sequence Generation
