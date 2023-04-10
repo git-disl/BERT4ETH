@@ -20,8 +20,6 @@ This is the code and data of the paper [BERT4ETH: A Pre-trained Transformer for 
 
 * * [De-anonymization(Tornado)](https://drive.google.com/file/d/1DMbPSZMSvTYMKUZg3oYKFrjPo2_jeeG4/view?usp=sharing)
 
-* * [MEV Bot](https://drive.google.com/file/d/10br9Xki_E443MJzGzQHQqLGds-uuGTRU/view?usp=sharing)
-
 * * [Normal Account](https://drive.google.com/file/d/1-htLUymg1UxDrXcI8tslU9wbn0E1vl9_/view?usp=sharing)
 
 * [ERC-20 Log Dataset (all in one)](https://drive.google.com/file/d/1mB2Tf7tMq5ApKKOVdctaTh2UZzzrAVxq/view?usp=sharing)
@@ -147,9 +145,20 @@ python run_dean.py --metric=euclidean \
                    --algo=bert4eth
 ```
 
-#### MEV Bot Detection
 
-```sh
-cd BERT4ETH/Model;
-python run_mev_bot.py --algo=bert4eth
-``` 
+
+-----
+## Citation
+
+If you find this repo useful, please give us a star and cite our paper:
+
+```
+@article{hu2023bert4eth,
+  title={BERT4ETH: A Pre-trained Transformer for Ethereum Fraud Detection},
+  author={Hu, Sihao and Zhang, Zhen and Luo, Bingqiao and Lu, Shengliang and He, Bingsheng and Liu, Ling},
+  journal={arXiv preprint arXiv:2303.18138},
+  year={2023}
+}
+```
+
+
