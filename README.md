@@ -197,5 +197,5 @@ If you find this repository useful, please give us a star and cite our paper : )
 -----
 ## Q&A
 
-If you have any questions, you can either open an issue or contact me (husihao@gatech.edu), and I will reply as soon as I see the issue or email.
+If you have any questions, you can either open an issue or contact me (sihaohu@gatech.edu), and I will reply as soon as I see the issue or email.
 
