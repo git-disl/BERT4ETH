@@ -181,8 +181,6 @@ python run_finetune_phisher.py --bizdate=bert4eth_1M_min3_dup_seq100_mask80 \
                                --max_seq_length=100 --checkpointDir=tmp
 ```
 
-If you have any questions, you can either open an issue or contact me (husihao@gatech.edu), and I will reply as soon as I see the issue or email.
-
 -----
 ## Citation
 
@@ -196,4 +194,8 @@ If you find this repository useful, please give us a star and cite our paper : )
 }
 ```
 
+-----
+## Q&A
+
+If you have any questions, you can either open an issue or contact me (husihao@gatech.edu), and I will reply as soon as I see the issue or email.
 
