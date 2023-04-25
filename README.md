@@ -2,7 +2,6 @@
 
 This is the repo for the code and datasets used in the paper [BERT4ETH: A Pre-trained Transformer for Ethereum Fraud Detection](https://arxiv.org/abs/2303.18138), which has been accepted by the ACM Web conference (WWW) 2023.
 
-
 ## Getting Start
 
 ### Requirements
@@ -182,10 +181,12 @@ python run_finetune_phisher.py --bizdate=bert4eth_1M_min3_dup_seq100_mask80 \
                                --max_seq_length=100 --checkpointDir=tmp
 ```
 
+If you have any questions, you can either open an issue or contact me (husihao@gatech.edu), and I will reply as soon as I see the issue or email.
+
 -----
 ## Citation
 
-If you find this repository useful, please give us a star and consider citing our paper : ) Thank you!
+If you find this repository useful, please give us a star and cite our paper : ) Thank you!
 ```
 @article{hu2023bert4eth,
   title={BERT4ETH: A Pre-trained Transformer for Ethereum Fraud Detection},
