@@ -1,5 +1,7 @@
 # BERT4ETH
 
+I updated the code to make it easier to run. (2023/08/27)
+
 This is the repo for the code and datasets used in the paper [BERT4ETH: A Pre-trained Transformer for Ethereum Fraud Detection](https://dl.acm.org/doi/abs/10.1145/3543507.3583345), accepted by the ACM Web conference (WWW) 2023.
 
 Here you can find our [slides](https://github.com/git-disl/BERT4ETH/blob/main/Material/BERT4ETH_WWW23_slides.pdf).
