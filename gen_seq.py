@@ -12,7 +12,7 @@ FLAGS = flags.FLAGS
 
 flags.DEFINE_bool("phisher", True, "whether to include phisher detection dataset.")
 flags.DEFINE_bool("deanon", True, "whether to include de-anonymization dataset.")
-flags.DEFINE_bool("tornado", False, "whether to include tornado dataset.")
+flags.DEFINE_bool("tornado", True, "whether to include tornado dataset.")
 flags.DEFINE_string("data_dir", "./Data", "data directory.")
 flags.DEFINE_string("dataset", None, "which dataset to use")
 flags.DEFINE_string("bizdate", None, "the date of running experiments.")
@@ -239,8 +239,8 @@ def feature_bucketization(eoa2seq_agg):
 
 def main():
 
-    f_in = open(os.path.join(FLAGS.data_dir, "normal_eoa_transaction_in_slice_100K.csv"), "r")
-    f_out = open(os.path.join(FLAGS.data_dir, "normal_eoa_transaction_out_slice_100K.csv"), "r")
+    f_in = open(os.path.join(FLAGS.data_dir, "normal_eoa_transaction_in_slice_1000K.csv"), "r")
+    f_out = open(os.path.join(FLAGS.data_dir, "normal_eoa_transaction_out_slice_1000K.csv"), "r")
     print("Add normal account transactions.")
 
     eoa2seq_in, eoa2seq_out = load_data(f_in, f_out)
@@ -307,8 +307,6 @@ def main():
     with open("./data/eoa2seq_" + FLAGS.bizdate + ".pkl", "wb") as f:
         pkl.dump(eoa2seq_agg, f)
 
-
-print("pause")
 
 if __name__ == '__main__':
     main()

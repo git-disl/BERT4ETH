@@ -330,7 +330,7 @@ def random_drop(eoa2seq, ratio=0.5):
 if __name__ == '__main__':
 
     # load label
-    phisher_account = pd.read_csv("../Data/phisher_account.txt", names=["account"])
+    phisher_account = pd.read_csv("Data/phisher_account.txt", names=["account"])
     phisher_account_set = set(phisher_account.account.values)
 
     # load vocab

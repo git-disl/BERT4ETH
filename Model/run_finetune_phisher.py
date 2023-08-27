@@ -17,10 +17,8 @@
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
-import os
 import sys
-sys.path.append("..")
-import optimization
+sys.path.append("")
 import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior()
 
@@ -202,7 +200,7 @@ def model_fn(features, mode, bert_config, vocab, init_checkpoint, learning_rate,
 def main(_):
 
     # load label
-    phisher_account = pd.read_csv("../../Data/phisher_account.txt", names=["account"])
+    phisher_account = pd.read_csv("../Data/phisher_account.txt", names=["account"])
     phisher_account_set = set(phisher_account.account.values)
 
     def is_phish(address):
