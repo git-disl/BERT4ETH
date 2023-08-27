@@ -32,7 +32,6 @@ Here you can find our [slides](https://github.com/git-disl/BERT4ETH/blob/main/Ma
 cd BERT4ETH/Data; # Labels are already included
 unzip ...;
 ``` 
-The total volume of unzipped dataset is quite huge (more than 15GB).
 
 If you want to run the basic BERT4ETH model, it is no need to download the ERC-20 log dataset.
 
@@ -43,13 +42,7 @@ Advanced features (In/out separation and ERC20 log) make the model not very effi
 
 ```sh
 cd Model/bert4eth;
-python gen_seq.py --phisher=True \
-                  --deanon=True \ 
-                  --mev=True \
-                  --dup=True \
-                  --dataset=1M \
-                  --bizdate=bert4eth_1M_min3_dup
-
+python gen_seq.py --bizdate=bert4eth_exp
 ```
 
 
@@ -68,7 +61,7 @@ The configuration file is "Model/BERT4ETH/bert_config.json"
   "intermediate_size": 64,
   "max_position_embeddings": 50,
   "num_attention_heads": 2,
-  "num_hidden_layers": 2,
+  "num_hidden_layers": 8,
   "type_vocab_size": 2,
   "vocab_size": 3000000
 }
@@ -79,32 +72,28 @@ The configuration file is "Model/BERT4ETH/bert_config.json"
 [//]: # (&#40;Masking, I/O separation and ERC20 log&#41;)
 
 ```sh
-python gen_pretrain_data.py --source_bizdate=bert4eth_1M_min3_dup  \
-                            --bizdate=bert4eth_1M_min3_dup_seq100_mask80  \ 
+python gen_pretrain_data.py --bizdate=bert4eth_exp  \ 
                             --max_seq_length=100  \
                             --dupe_factor=10 \
-                            --masked_lm_prob=0.8 \
-                            --do_eval=False
+                            --masked_lm_prob=0.8 
 ```
 
 
 #### Step 2: Pre-train BERT4ETH Model
 
 ```sh
-python run_pretrain.py --bizdate=bert4eth_1M_min3_dup_seq100_mask80 \
+python run_pretrain.py --bizdate=bert4eth_exp \
                        --max_seq_length=100 \
-                       --checkpointDir=bert4eth_1M_min3_dup_seq100_mask80_shared_zipfan5000 \
+                       --checkpointDir=bert4eth_exp \
                        --epoch=5 \
                        --batch_size=256 \
                        --learning_rate=1e-4 \
                        --num_train_steps=1000000 \
                        --num_warmup_steps=100 \
                        --save_checkpoints_steps=8000 \
-                       --neg_strategy=zip
-                       --neg_sample_num=5000 
-                       --neg_share=True
-                       --init_seed=1234 
-                       
+                       --neg_strategy=zip \
+                       --neg_sample_num=5000 \ 
+                       --neg_share=True                    
 ```
 
 
@@ -124,16 +113,14 @@ python run_pretrain.py --bizdate=bert4eth_1M_min3_dup_seq100_mask80 \
 | `neg_sample_num`         | The negative sampling number for one batch, default = `5000`.                      |
 | `do_eval`                | Whether to do evaluation during training, default = `False`.                       |
 | `checkpointDir`          | Specify the directory to save the checkpoints.                                     |
-| `init_seed`              | The initial seed, default = `1234`.                                                |
-
 
 
 #### Step 3: Output Representation
 
 
 ```sh
-python run_embed.py --bizdate=bert4eth_1M_min3_dup_seq100_mask80 \ 
-                    --init_checkpoint=bert4eth_1M_min3_dup_seq100_mask80_shared_zipfan5000/model_104000 \  
+python run_embed.py --bizdate=bert4eth_exp \ 
+                    --init_checkpoint=bert4eth_exp/model_104000 \  
                     --max_seq_length=100 \
                     --neg_sample_num=5000 \
                     --neg_strategy=zip \
@@ -172,15 +159,15 @@ python run_dean_Tornado.py --metric=euclidean \
 
 ```sh
 cd BERT4ETH/Model;
-python gen_finetune_phisher_data.py --bizdate=bert4eth_1M_min3_dup_seq100_mask80 \ 
-                                    --source_bizdate=bert4eth_1M_min3_dup \
+python gen_finetune_phisher_data.py --bizdate=bert4eth_exp \ 
                                     --max_seq_length=100 
 ```
 
 ```sh
 cd BERT4ETH/Model/BERT4ETH
-python run_finetune_phisher.py --bizdate=bert4eth_1M_min3_dup_seq100_mask80 \ 
-                               --max_seq_length=100 --checkpointDir=tmp
+python run_finetune_phisher.py --bizdate=bert4eth_exp \ 
+                               --max_seq_length=100 \ 
+                               --checkpointDir=tmp
 ```
 
 -----
