@@ -39,7 +39,7 @@ The master branch hosts the basic BERT4ETH model. If you wish to run the basic B
 #### Step 3: Transaction Sequence Generation
 
 ```sh
-cd Model/bert4eth;
+cd Model;
 python gen_seq.py --bizdate=bert4eth_exp
 ```
 
@@ -82,16 +82,15 @@ python gen_pretrain_data.py --bizdate=bert4eth_exp  \
 ```sh
 python run_pretrain.py --bizdate=bert4eth_exp \
                        --max_seq_length=100 \
-                       --checkpointDir=bert4eth_exp \
                        --epoch=5 \
                        --batch_size=256 \
                        --learning_rate=1e-4 \
                        --num_train_steps=1000000 \
-                       --num_warmup_steps=100 \
                        --save_checkpoints_steps=8000 \
                        --neg_strategy=zip \
                        --neg_sample_num=5000 \ 
-                       --neg_share=True                    
+                       --neg_share=True \ 
+                       --checkpointDir=bert4eth_exp 
 ```
 
 
@@ -104,12 +103,10 @@ python run_pretrain.py --bizdate=bert4eth_exp \
 | `batch_size`             | Batch size, default = `256`.                                                       |
 | `learning_rate`          | Learning rate for the optimizer (Adam), default = `1e-4`.                          |
 | `num_train_steps`        | The maximum number of training steps, default = `1000000`,                         |
-| `num_warmup_steps`       | The step number for warm-up training, default = `100`.                             |
 | `save_checkpoints_steps` | The parameter controlling the step of saving checkpoints, default = `8000`.        |
 | `neg_strategy`           | Strategy for negative sampling, default `zip`, options (`uniform`, `zip`, `freq`). |
 | `neg_share`              | Whether enable in-batch sharing strategy, default = `True`.                        |
 | `neg_sample_num`         | The negative sampling number for one batch, default = `5000`.                      |
-| `do_eval`                | Whether to do evaluation during training, default = `False`.                       |
 | `checkpointDir`          | Specify the directory to save the checkpoints.                                     |
 
 
@@ -129,7 +126,6 @@ python run_embed.py --bizdate=bert4eth_exp \
 
 #### Phishing Account Detection
 ```sh
-cd BERT4ETH/Model;
 python run_phishing_detection.py --algo=bert4eth \
                                  --model_index=XXX
 
@@ -138,7 +134,6 @@ python run_phishing_detection.py --algo=bert4eth \
 #### De-anonymization (ENS dataset)
 
 ```sh
-cd BERT4ETH/Model;
 python run_dean_ENS.py --metric=euclidean \
                        --algo=bert4eth \
                        --model_index=XXX
@@ -147,7 +142,6 @@ python run_dean_ENS.py --metric=euclidean \
 #### De-anonymization (Tornado Cash)
 
 ```sh
-cd BERT4ETH/Model;
 python run_dean_Tornado.py --metric=euclidean \
                            --algo=bert4eth \
                            --model_index=XXX
@@ -156,13 +150,11 @@ python run_dean_Tornado.py --metric=euclidean \
 ### Fine-tuning on the phishing account detection
 
 ```sh
-cd BERT4ETH/Model;
 python gen_finetune_phisher_data.py --bizdate=bert4eth_exp \ 
                                     --max_seq_length=100 
 ```
 
 ```sh
-cd BERT4ETH/Model/BERT4ETH
 python run_finetune_phisher.py --bizdate=bert4eth_exp \ 
                                --max_seq_length=100 \ 
                                --checkpointDir=tmp

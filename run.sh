@@ -18,13 +18,18 @@ CUDA_VISIBLE_DEVICES=3 python run_pretrain.py --bizdate=bert4eth_exp \
                        --neg_sample_num=5000 \
                        --neg_share=True
 
-
+# output representations
 python run_embed.py --bizdate=bert4eth_exp \
                     --init_checkpoint=bert4eth_exp/model_104000 \
                     --max_seq_length=100 \
                     --neg_sample_num=5000 \
                     --neg_strategy=zip \
                     --neg_share=True
+
+
+# Testing on the account representation
+python run_phishing_detection.py --algo=bert4eth \
+                                 --model_index=XXX
 
 
 # generate finetune data for phishing account detection

@@ -28,7 +28,7 @@ rng = random.Random(random_seed)
 
 ## parameters
 flags.DEFINE_integer("max_seq_length", 50, "max sequence length.")
-flags.DEFINE_string("data_dir", './data/', "data dir.")
+flags.DEFINE_string("data_dir", './inter_data/', "data dir.")
 flags.DEFINE_string("dataset_name", 'eth',"dataset name.")
 flags.DEFINE_string("vocab_filename", "vocab", "vocab filename")
 flags.DEFINE_bool("random_drop", False, "whether to drop randomly")
@@ -338,7 +338,7 @@ if __name__ == '__main__':
     with open(vocab_file_name, "rb") as f:
         vocab = pkl.load(f)
 
-    with open("./data/eoa2seq_" + FLAGS.bizdate + ".pkl", "rb") as f:
+    with open("./inter_data/eoa2seq_" + FLAGS.bizdate + ".pkl", "rb") as f:
         eoa2seq = pkl.load(f)
 
     print("number of target user account:", len(eoa2seq))

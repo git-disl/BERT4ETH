@@ -114,7 +114,7 @@ if __name__ == '__main__':
     flags.DEFINE_bool("do_train", False, "")
     flags.DEFINE_bool("do_eval", True, "")
     flags.DEFINE_bool("attention_output", False, "")
-    flags.DEFINE_string("test_input_file", "../data/embed.tfrecord", "Example for embedding generation.")
+    flags.DEFINE_string("test_input_file", "./inter_data/embed.tfrecord", "Example for embedding generation.")
     flags.DEFINE_integer("neg_sample_num", 5000, "The number of negative samples in a batch")
     flags.DEFINE_string("init_checkpoint", None, "Initial checkpoint (usually from a pre-trained BERT model).")
 
