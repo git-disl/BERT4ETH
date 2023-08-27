@@ -34,13 +34,9 @@ flags.DEFINE_string("data_dir", './data/', "data dir.")
 flags.DEFINE_string("vocab_filename", "vocab", "vocab filename")
 
 flags.DEFINE_string("bizdate", None, "the signature of running experiments")
-flags.DEFINE_string("source_bizdate", None, "signature of previous data")
 
 if FLAGS.bizdate is None:
     raise ValueError("bizdate is required.")
-
-if FLAGS.source_bizdate is None:
-    raise ValueError("source_bizdate is required.")
 
 HEADER = 'hash,nonce,block_hash,block_number,transaction_index,from_address,to_address,value,gas,gas_price,input,block_timestamp,max_fee_per_gas,max_priority_fee_per_gas,transaction_type'.split(
     ",")
@@ -340,7 +336,7 @@ def cmp_udf_reverse(x1, x2):
 def main():
     vocab = FreqVocab()
     print("===========Load Sequence===========")
-    with open("./data/eoa2seq_" + FLAGS.source_bizdate + ".pkl", "rb") as f:
+    with open("./data/eoa2seq_" + FLAGS.bizdate + ".pkl", "rb") as f:
         eoa2seq = pkl.load(f)
 
     print("number of target user account:", len(eoa2seq))
@@ -448,8 +444,6 @@ def main():
 
     return
 
-
 if __name__ == '__main__':
     main()
-
 

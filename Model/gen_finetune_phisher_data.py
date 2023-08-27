@@ -38,7 +38,6 @@ flags.DEFINE_float("beta", 0.0, "penalty for drop")
 flags.DEFINE_float("drop_ratio", 0.0, "ratio to drop repetitive and frequent trans")
 
 flags.DEFINE_string("bizdate", None, "the signature of running experiments")
-flags.DEFINE_string("source_bizdate", None, "signature of previous data")
 
 SLIDING_STEP = round(FLAGS.max_seq_length * 0.6)
 
@@ -47,9 +46,6 @@ print("SLIDING_STEP:", SLIDING_STEP)
 
 if FLAGS.bizdate is None:
     raise ValueError("bizdate is required.")
-
-if FLAGS.source_bizdate is None:
-    raise ValueError("source_bizdate is required.")
 
 class FinetuneInstance(object):
     """A single training instance (sentence pair)."""
@@ -342,7 +338,7 @@ if __name__ == '__main__':
     with open(vocab_file_name, "rb") as f:
         vocab = pkl.load(f)
 
-    with open("./data/eoa2seq_" + FLAGS.source_bizdate + ".pkl", "rb") as f:
+    with open("./data/eoa2seq_" + FLAGS.bizdate + ".pkl", "rb") as f:
         eoa2seq = pkl.load(f)
 
     print("number of target user account:", len(eoa2seq))
