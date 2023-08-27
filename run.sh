@@ -19,7 +19,7 @@ CUDA_VISIBLE_DEVICES=3 python run_pretrain.py --bizdate=bert4eth_exp \
                        --neg_share=True
 
 # output representations
-python run_embed.py --bizdate=bert4eth_exp \
+python output_embed.py --bizdate=bert4eth_exp \
                     --init_checkpoint=bert4eth_exp/model_104000 \
                     --max_seq_length=100 \
                     --neg_sample_num=5000 \
