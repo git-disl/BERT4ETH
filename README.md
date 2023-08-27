@@ -28,15 +28,14 @@ I use python 3.9, tensorflow 2.9.2 with CUDA 11.2.
 
 * [ERC-20 Log Dataset (all in one)](https://drive.google.com/file/d/1mB2Tf7tMq5ApKKOVdctaTh2UZzzrAVxq/view?usp=sharing)
 
-#### Step 2: Unzip dataset under the directory of "BERT4ETH/Data/" 
+The master branch hosts the basic BERT4ETH model. If you wish to run the basic BERT4ETH model, there is no need to download the ERC-20 log dataset. Advanced features such as In/out separation and ERC20 log can be found in the old branch.
 
+#### Step 2: Unzip dataset under the directory of "BERT4ETH/Data/" 
 
 ```sh
 cd BERT4ETH/Data; # Labels are already included
 unzip ...;
 ``` 
-
-The master branch hosts the basic BERT4ETH model. If you wish to run the basic BERT4ETH model, there is no need to download the ERC-20 log dataset. Advanced features such as In/out separation and ERC20 log can be found in the old branch.
 
 #### Step 3: Transaction Sequence Generation
 
