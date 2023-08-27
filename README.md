@@ -11,6 +11,8 @@ Here you can find our [slides](https://github.com/git-disl/BERT4ETH/blob/main/Ma
 * NumPy >= 1.12.1
 * TensorFlow >= 1.4.0
 
+I use tensorflow 2.9.2 with CUDA 11.2.
+
 ### Preprocess dataset 
 
 #### Step 1: Download dataset from Google Drive. 
@@ -33,10 +35,7 @@ cd BERT4ETH/Data; # Labels are already included
 unzip ...;
 ``` 
 
-If you want to run the basic BERT4ETH model, it is no need to download the ERC-20 log dataset.
-
-Advanced features (In/out separation and ERC20 log) make the model not very efficient..
-
+The master branch hosts the basic BERT4ETH model. If you wish to run the basic BERT4ETH model, there is no need to download the ERC-20 log dataset. Advanced features such as In/out separation and ERC20 log can be found in the old branch.
 
 #### Step 3: Transaction Sequence Generation
 
