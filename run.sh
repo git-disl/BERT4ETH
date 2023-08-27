@@ -6,7 +6,7 @@ python gen_pretrain_data.py --bizdate=bert4eth_exp  \
                             --dupe_factor=10 \
                             --masked_lm_prob=0.8
 
-cd BERT4ETH
+cd Model
 
 python run_pretrain.py --bizdate=bert4eth_exp \
                        --max_seq_length=100 \

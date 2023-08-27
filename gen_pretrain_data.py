@@ -24,15 +24,14 @@ flags = tf.flags
 FLAGS = flags.FLAGS
 
 flags.DEFINE_integer("pool_size", 10, "multiprocesses pool size.")
-flags.DEFINE_integer("max_seq_length", 50, "max sequence length.")
+flags.DEFINE_integer("max_seq_length", 100, "max sequence length.")
 flags.DEFINE_float("masked_lm_prob", 0.8, "Masked LM probability.")
 flags.DEFINE_float("mask_prob", 1.0, "mask probabaility")
 flags.DEFINE_bool("do_eval", False, "")
 flags.DEFINE_bool("do_embed", True, "")
 flags.DEFINE_integer("dupe_factor", 10, "Number of times to duplicate the input data (with different masks).")
-flags.DEFINE_string("data_dir", './data/', "data dir.")
+flags.DEFINE_string("data_dir", './inter_data/', "data dir.")
 flags.DEFINE_string("vocab_filename", "vocab", "vocab filename")
-
 flags.DEFINE_string("bizdate", None, "the signature of running experiments")
 
 if FLAGS.bizdate is None:
@@ -336,7 +335,7 @@ def cmp_udf_reverse(x1, x2):
 def main():
     vocab = FreqVocab()
     print("===========Load Sequence===========")
-    with open("./data/eoa2seq_" + FLAGS.bizdate + ".pkl", "rb") as f:
+    with open(FLAGS.data_dir + "eoa2seq_" + FLAGS.bizdate + ".pkl", "rb") as f:
         eoa2seq = pkl.load(f)
 
     print("number of target user account:", len(eoa2seq))

@@ -278,8 +278,8 @@ def main():
 
     if FLAGS.tornado:
         print("Add tornado...")
-        tornado_in = open(os.path.join(FLAGS.data_dir, "tornado_trans_in_removed.csv", "r"))
-        tornado_out = open(os.path.join(FLAGS.data_dir, "tornado_trans_out_removed.csv", "r"))
+        tornado_in = open(os.path.join(FLAGS.data_dir, "tornado_trans_in_removed.csv"), "r")
+        tornado_out = open(os.path.join(FLAGS.data_dir, "tornado_trans_out_removed.csv"), "r")
         tornado_eoa2seq_in, tornado_eoa2seq_out = load_data(tornado_in, tornado_out)
 
         if FLAGS.dup:
@@ -302,9 +302,9 @@ def main():
     print("Mean:", np.mean(length_list))
     print("Seq #:", len(length_list))
 
-    tf.gfile.MakeDirs("./data")
+    tf.gfile.MakeDirs("./inter_data")
 
-    with open("./data/eoa2seq_" + FLAGS.bizdate + ".pkl", "wb") as f:
+    with open("./inter_data/eoa2seq_" + FLAGS.bizdate + ".pkl", "wb") as f:
         pkl.dump(eoa2seq_agg, f)
 
 
