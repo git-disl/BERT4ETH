@@ -46,11 +46,11 @@ flags.DEFINE_string(
     "This specifies the model architecture.")
 
 flags.DEFINE_string(
-    "train_input_file", "../data/train.tfrecord",
+    "train_input_file", "../inter_data/train.tfrecord",
     "Input TF example files (can be a glob or comma separated).")
 
 flags.DEFINE_string(
-    "test_input_file", "../data/test.tfrecord",
+    "test_input_file", "../inter_data/test.tfrecord",
     "Input TF example files (can be a glob or comma separated).")
 
 flags.DEFINE_string(
@@ -78,7 +78,7 @@ flags.DEFINE_integer("neg_sample_num", None, "The number of negative samples in 
 flags.DEFINE_string("neg_strategy", None, "Strategy of negative sampling")
 flags.DEFINE_bool("neg_share", False, "Whether to share negative samples for each training batch")
 flags.DEFINE_bool("use_tpu", False, "Whether to use TPU or GPU/CPU.")
-flags.DEFINE_string("data_dir", '../data/', "data dir.")
+flags.DEFINE_string("data_dir", '../inter_data/', "data dir.")
 flags.DEFINE_string("bizdate", None, "the date of running experiments")
 
 MAX_PREDICTIONS_PER_SEQ = math.ceil(FLAGS.max_seq_length * FLAGS.masked_lm_prob)

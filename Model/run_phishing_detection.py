@@ -87,7 +87,7 @@ def load_embedding():
 
 def main():
 
-    phisher_account = pd.read_csv("Data/phisher_account.txt", names=["account"])
+    phisher_account = pd.read_csv("../Data/phisher_account.txt", names=["account"])
     phisher_account_set = set(phisher_account.account.values)
 
     X, address_list = load_embedding()

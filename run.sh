@@ -6,9 +6,7 @@ python gen_pretrain_data.py --bizdate=bert4eth_exp  \
                             --dupe_factor=10 \
                             --masked_lm_prob=0.8
 
-cd Model
-
-python run_pretrain.py --bizdate=bert4eth_exp \
+CUDA_VISIBLE_DEVICES=3 python run_pretrain.py --bizdate=bert4eth_exp \
                        --max_seq_length=100 \
                        --checkpointDir=bert4eth_exp \
                        --epoch=5 \

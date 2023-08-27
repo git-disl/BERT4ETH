@@ -7,11 +7,10 @@ Here you can find our [slides](https://github.com/git-disl/BERT4ETH/blob/main/Ma
 ## Getting Start
 
 ### Requirements
-* Python >= 3.6.1
-* NumPy >= 1.12.1
+* Python >= 3.6
 * TensorFlow >= 1.4.0
 
-I use tensorflow 2.9.2 with CUDA 11.2.
+I use python 3.9, tensorflow 2.9.2 with CUDA 11.2.
 
 ### Preprocess dataset 
 
