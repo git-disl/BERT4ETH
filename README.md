@@ -66,7 +66,7 @@ The configuration file is "Model/bert_config.json"
 }
 ```
 
-#### Step 1: Pre-train Sequence Generation 
+#### Step 1: Pre-training Data Generation from Sequence 
 
 [//]: # (&#40;Masking, I/O separation and ERC20 log&#41;)
 
@@ -78,7 +78,7 @@ python gen_pretrain_data.py --bizdate=bert4eth_exp  \
 ```
 
 
-#### Step 2: Pre-train BERT4ETH Model
+#### Step 2: Pre-train BERT4ETH 
 
 ```sh
 python run_pretrain.py --bizdate=bert4eth_exp \
