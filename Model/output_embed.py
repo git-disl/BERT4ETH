@@ -99,10 +99,10 @@ def main(_):
         print("saving embedding and address..")
         checkpoint_name = FLAGS.init_checkpoint.split("/")[0]
         model_index = str(FLAGS.init_checkpoint.split("/")[-1].split("_")[1])
-        embed_output_file = "./data/embedding_" + checkpoint_name + "_" + model_index + ".npy"
+        embed_output_file = "./inter_data/embedding_" + checkpoint_name + "_" + model_index + ".npy"
         print(embed_output_file)
         np.save(embed_output_file, sequence_output_vector_list)
-        address_output_file = "./data/address_" + checkpoint_name + "_" + model_index + ".npy"
+        address_output_file = "./inter_data/address_" + checkpoint_name + "_" + model_index + ".npy"
         print(address_output_file)
         np.save(address_output_file, address_list)
 

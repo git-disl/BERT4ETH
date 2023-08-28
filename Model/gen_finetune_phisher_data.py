@@ -27,15 +27,10 @@ random_seed = 12345
 rng = random.Random(random_seed)
 
 ## parameters
-flags.DEFINE_integer("max_seq_length", 50, "max sequence length.")
+flags.DEFINE_integer("max_seq_length", 100, "max sequence length.")
 flags.DEFINE_string("data_dir", './inter_data/', "data dir.")
 flags.DEFINE_string("dataset_name", 'eth',"dataset name.")
 flags.DEFINE_string("vocab_filename", "vocab", "vocab filename")
-flags.DEFINE_bool("random_drop", False, "whether to drop randomly")
-flags.DEFINE_bool("total_drop", False, "whether to drop")
-flags.DEFINE_bool("drop", False, "whether to drop")
-flags.DEFINE_float("beta", 0.0, "penalty for drop")
-flags.DEFINE_float("drop_ratio", 0.0, "ratio to drop repetitive and frequent trans")
 
 flags.DEFINE_string("bizdate", None, "the signature of running experiments")
 
@@ -247,86 +242,6 @@ def write_finetune_instance_to_example_files(instances, max_seq_length, vocab, o
     tf.logging.info("Wrote %d total instances", total_written)
 
 
-def repeat_drop(eoa2seq, vocab, beta, ratio):
-    """
-    ratio: the ratio of reduce transaction
-    beta: the penalty for sampling, if beta is too huge, there is overflow
-    """
-    new_eoa2seq = {}
-
-    for eoa, seq in eoa2seq.items():
-
-        filter_num = int(ratio * len(seq))
-        # calculate drop frequency after each drop
-        address_list = list(map(lambda x: x[0], seq))
-        freq = {}
-        for addr in address_list:
-            try:
-                freq[addr] += 1
-            except:
-                freq[addr] = 1
-
-        frequency_list = [freq[addr] for addr in address_list]
-        if np.max(frequency_list) == 1:
-            # if there is no repetitiveness in the sequence
-            new_eoa2seq[eoa] = seq
-            continue
-
-        frequency_list = list(map(lambda x: pow(x, beta), frequency_list))
-        denominator = np.sum(frequency_list)
-        proba_list = frequency_list / denominator
-        drop_idx = set(np.random.choice(range(len(seq)), filter_num, p=proba_list, replace=False))
-
-        new_seq = []
-        for i in range(len(seq)):
-            if i not in drop_idx:
-                new_seq.append(seq[i])
-
-        new_eoa2seq[eoa] = new_seq
-
-    return new_eoa2seq
-
-def total_repeat_drop(eoa2seq):
-    """
-    totally drop the repeat part.
-    """
-    new_eoa2seq = {}
-    for eoa, seq in eoa2seq.items():
-        new_seq = []
-        exist_addr = set()
-        for trans in seq:
-            if trans[0] not in exist_addr:
-                exist_addr.add(trans[0])
-                new_seq.append(trans)
-
-        new_eoa2seq[eoa] = new_seq
-
-    return new_eoa2seq
-
-
-def random_drop(eoa2seq, ratio=0.5):
-
-    new_eoa2seq = {}
-    for eoa, seq in eoa2seq.items():
-        filter_num = int(ratio * len(seq))
-
-        if len(seq) <= 2:
-            new_eoa2seq[eoa] = seq
-
-        else:
-            remain_idx = set(np.random.choice(range(len(seq)), len(seq) - filter_num, replace=False))
-            new_seq = []
-
-            for id in remain_idx:
-                new_seq.append(seq[id])
-
-            new_seq = sorted(new_seq, key=functools.cmp_to_key(cmp_udf_reverse))
-            new_eoa2seq[eoa] = new_seq
-
-    return new_eoa2seq
-
-
-
 if __name__ == '__main__':
 
     # load label
@@ -342,15 +257,6 @@ if __name__ == '__main__':
         eoa2seq = pkl.load(f)
 
     print("number of target user account:", len(eoa2seq))
-
-    if FLAGS.random_drop:
-        eoa2seq = random_drop(eoa2seq, FLAGS.drop_ratio)
-
-    elif FLAGS.drop:
-        eoa2seq = repeat_drop(eoa2seq, None, FLAGS.beta, FLAGS.drop_ratio)
-
-    elif FLAGS.total_drop:
-        eoa2seq = total_repeat_drop(eoa2seq)
 
     eoa_list = list(eoa2seq.keys())
     rng.shuffle(eoa_list)

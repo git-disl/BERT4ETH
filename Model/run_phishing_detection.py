@@ -3,13 +3,10 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 from sklearn.manifold import TSNE
-from sklearn.metrics import confusion_matrix
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
-from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score,precision_score,recall_score,f1_score, roc_curve, auc, precision_recall_curve
-import lightgbm as lgb
 
 import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior()
@@ -18,49 +15,22 @@ flags = tf.flags
 FLAGS = flags.FLAGS
 
 flags.DEFINE_bool("visual", False, "whether to do visualization or not")
-flags.DEFINE_string("algo", None, "algorithm for embedding generation" )
-flags.DEFINE_string("model_index", None, "model index")
-
+flags.DEFINE_string("init_checkpoint", None, "Initial checkpoint (usually from a pre-trained BERT model).")
 
 def load_embedding():
 
-    if FLAGS.algo == "deepwalk":
-        embeddings = np.load("deepwalk/data/deepwalk_20_10_20220925_embedding.npy")
-        address_for_embedding = np.load("deepwalk/data/deepwalk_20_10_20220925_address.npy")
+    # must have checkpoint
+    if FLAGS.init_checkpoint == None:
+        raise ValueError("Must need a checkpoint for evaluation")
 
-    elif FLAGS.algo == "trans2vec":
-        embeddings = np.load("trans2vec/data/tran2vec_20_10_0.5_1_20221010_embedding.npy")
-        address_for_embedding = np.load("trans2vec/data/tran2vec_20_10_0.5_1_20221010_address.npy")
-
-    elif FLAGS.algo == "bert4eth":
-        embeddings = np.load("BERT4ETH/data/bert_embedding_" + FLAGS.model_index + ".npy")
-        address_for_embedding = np.load("BERT4ETH/data/address_for_embed_" + FLAGS.model_index + ".npy")
-
-    elif FLAGS.algo == "diff2vec":
-        embeddings = np.load("diff2vec/data/diff2vec_10_20_20220925_embedding.npy")
-        address_for_embedding = np.load("diff2vec/data/diff2vec_10_20_20220925_address.npy")
-
-    elif FLAGS.algo == "role2vec":
-        embeddings = np.load("role2vec/data/role2vec_10_20_20220916_embedding.npy")
-        address_for_embedding = np.load("role2vec/data/role2vec_10_20_20220916_address.npy")
-
-    elif FLAGS.algo == "sage":
-        embeddings = np.load("dgl_gnn/data/sage_6_20220915_embedding.npy")
-        address_for_embedding = np.load("dgl_gnn/data/sage_6_20220915_address.npy")
-
-    elif FLAGS.algo == "gat":
-        embeddings = np.load("dgl_gnn/data/gat_7_20220915_embedding.npy")
-        address_for_embedding = np.load("dgl_gnn/data/gat_7_20220915_address.npy")
-
-    elif FLAGS.algo == "gcn":
-        embeddings = np.load("dgl_gnn/data/gcn_5_20220915_embedding.npy")
-        address_for_embedding = np.load("dgl_gnn/data/gcn_5_20220915_address.npy")
-
-    else:
-        raise ValueError("should choose right algo..")
+    checkpoint_name = FLAGS.init_checkpoint.split("/")[0]
+    model_index = str(FLAGS.init_checkpoint.split("/")[-1].split("_")[1])
+    embeddings = np.load("./inter_data/embedding_" + checkpoint_name + "_" + model_index + ".npy")
+    address_for_embedding = np.load("./inter_data/address_" + checkpoint_name + "_" + model_index + ".npy")
 
     # group by embedding according to address
     address_to_embedding = {}
+
     for i in range(len(address_for_embedding)):
         address = address_for_embedding[i]
         embedding = embeddings[i]
@@ -101,7 +71,7 @@ def main():
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
-    model = RandomForestClassifier(n_estimators=50, criterion='entropy', random_state=0)
+    model = RandomForestClassifier(n_estimators=200, criterion='entropy', random_state=0)
     model.fit(X_train, y_train)
 
     y_test_proba = model.predict_proba(X_test)[:, 1]
@@ -121,7 +91,8 @@ def main():
     plt.show()
 
     # print("================ROC Curve====================")
-    print("model_index:", FLAGS.model_index)
+    model_index = str(FLAGS.init_checkpoint.split("/")[-1].split("_")[1])
+    print("model_index:", model_index)
     fpr, tpr, thresholds = roc_curve(y_test, y_test_proba, pos_label=1)
     print("AUC=", auc(fpr, tpr))
 
