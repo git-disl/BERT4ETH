@@ -49,7 +49,7 @@ python gen_seq.py --bizdate=bert4eth_exp
 
 #### Step 0: Model Configuration
 
-The configuration file is "Model/BERT4ETH/bert_config.json"
+The configuration file is "Model/bert_config.json"
 ```
 {
   "attention_probs_dropout_prob": 0.2,
