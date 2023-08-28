@@ -47,6 +47,7 @@ python gen_seq.py --bizdate=bert4eth_exp
 
 ### Pre-training
 
+<!-- 
 #### Step 0: Model Configuration
 
 The configuration file is "Model/bert_config.json"
@@ -65,6 +66,7 @@ The configuration file is "Model/bert_config.json"
   "vocab_size": 3000000
 }
 ```
+-->
 
 #### Step 1: Pre-training Data Generation from Sequence 
 
