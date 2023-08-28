@@ -126,9 +126,9 @@ python output_embed.py --bizdate=bert4eth_exp \
 
 #### Phishing Account Detection
 ```sh
-python run_phishing_detection.py --init_checkpoint=bert4eth_exp/model_104000 # Random Forest
+python run_phishing_detection.py --init_checkpoint=bert4eth_exp/model_104000 # Random Forest (RF)
 
-python run_phishing_detection_dnn.py --init_checkpoint=bert4eth_exp/model_104000 # DNN
+python run_phishing_detection_dnn.py --init_checkpoint=bert4eth_exp/model_104000 # DNN, better than RF
 ```
 
 #### De-anonymization (ENS dataset)
