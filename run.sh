@@ -30,6 +30,7 @@ CUDA_VISIBLE_DEVICES=3 python output_embed.py --bizdate=bert4eth_exp \
 # Testing on the account representation
 python run_phishing_detection.py --init_checkpoint=bert4eth_exp/model_104000
 
+CUDA_VISIBLE_DEVICES=3 python run_phishing_detection_dnn.py --init_checkpoint=bert4eth_exp/model_104000
 
 # generate finetune data for phishing account detection
 python gen_finetune_phisher_data.py --bizdate=bert4eth_exp \

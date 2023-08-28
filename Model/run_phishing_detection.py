@@ -103,7 +103,7 @@ def main():
     plt.plot(fpr, tpr)
     plt.show()
 
-    for threshold in [0.1, 0.15, 0.2]:
+    for threshold in [0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4]:
         print("threshold =", threshold)
         y_pred = np.zeros_like(y_test_proba)
         y_pred[np.where(np.array(y_test_proba) >= threshold)[0]] = 1
