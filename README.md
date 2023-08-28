@@ -126,7 +126,7 @@ python output_embed.py --bizdate=bert4eth_exp \
 
 I have generated a version of [embedding file](https://drive.google.com/file/d/1mQgO1LalWhjeR064VhPRmkLl_ztSTroW/view?usp=sharing), you can unzip it under the directory of "Model/inter_data/".
 
-### Testing on the account representation
+### Testing on output account representation
 
 #### Phishing Account Detection
 ```sh
@@ -154,7 +154,7 @@ python run_dean_Tornado.py --metric=euclidean \
 ```
 -->
 
-### Fine-tuning on the phishing account detection
+### Fine-tuning for phishing account detection
 ```sh
 
 python gen_finetune_phisher_data.py --bizdate=bert4eth_exp \ 
