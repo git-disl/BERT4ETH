@@ -2,3 +2,4 @@
 .DS_Store
 ./Model/run_finetune_phisher.py
 ./Model/gen_finetune_phisher_data.py
+./Model/run_dean_Tornado.py

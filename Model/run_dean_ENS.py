@@ -9,10 +9,9 @@ tf.disable_v2_behavior()
 
 flags = tf.flags
 FLAGS = flags.FLAGS
-flags.DEFINE_string("algo", "", "algorithm for embedding generation" )
-flags.DEFINE_string("model_index", None, "model index")
 flags.DEFINE_string("metric", "euclidean", "")
 flags.DEFINE_string("ens_dataset", "../Data/dean_all_ens_pairs.csv", "")
+flags.DEFINE_string("init_checkpoint", None, "Initial checkpoint (usually from a pre-trained BERT model).")
 flags.DEFINE_integer("max_cnt", 2, "")
 
 def euclidean_dist(a, b):
@@ -100,64 +99,23 @@ def generate_pairs(ens_pairs, min_cnt=2, max_cnt=2, mirror=True):
                         address_pairs.append([addr2, addr1])
     return address_pairs, all_ens_names
 
-
 def load_embedding():
 
+    # must have checkpoint
+    if FLAGS.init_checkpoint == None:
+        raise ValueError("Must need a checkpoint for evaluation")
 
-    if FLAGS.algo == "deepwalk":
-        embeddings = np.load(FLAGS.embed_dir + "deepwalk/data/deepwalk_20_10_20220915_embedding.npy")
-        address_for_embedding = np.load(FLAGS.embed_dir + "deepwalk/data/deepwalk_20_10_20220915_address.npy")
-
-    elif FLAGS.algo == "trans2vec":
-        embeddings = np.load(FLAGS.embed_dir + "trans2vec/data/tran2vec_20_10_0.5_1_20220915_embedding.npy")
-        address_for_embedding = np.load(FLAGS.embed_dir + "trans2vec/data/tran2vec_20_10_0.5_1_20220915_address.npy")
-
-    elif FLAGS.algo == "diff2vec":
-        embeddings = np.load(FLAGS.embed_dir + "diff2vec/data/diff2vec_10_20_20220915_embedding.npy")
-        address_for_embedding = np.load(FLAGS.embed_dir + "diff2vec/data/diff2vec_10_20_20220915_address.npy")
-
-    elif FLAGS.algo == "role2vec":
-        embeddings = np.load(FLAGS.embed_dir + "role2vec/data/role2vec_10_20_20220916_embedding.npy")
-        address_for_embedding = np.load(FLAGS.embed_dir + "role2vec/data/role2vec_10_20_20220916_address.npy")
-
-    elif FLAGS.algo == "sage":
-        embeddings = np.load(FLAGS.graph_embed_dir + "/sage_4_link_predict_D1_2layer_embedding.npy")
-        address_for_embedding = np.load(FLAGS.graph_embed_dir + "/sage_4_link_predict_D1_2layer_address.npy")
-
-    elif FLAGS.algo == "gat":
-        embeddings = np.load(FLAGS.graph_embed_dir + "/gat_4_link_predict_D1_2layer_embedding.npy")
-        address_for_embedding = np.load(FLAGS.graph_embed_dir + "/gat_4_link_predict_D1_2layer_address.npy")
-
-    elif FLAGS.algo == "gcn":
-        embeddings = np.load(FLAGS.graph_embed_dir + "/gcn_4_link_predict_D1_2layer_embedding.npy")
-        address_for_embedding = np.load(FLAGS.graph_embed_dir + "/gcn_4_link_predict_D1_2layer_address.npy")
-
-    elif FLAGS.algo == "BERT":
-        embeddings = np.load("BERT/data/bert_embedding_" + FLAGS.model_index + ".npy")
-        address_for_embedding = np.load("BERT/data/address_for_embed_" + FLAGS.model_index + ".npy")
-
-    elif FLAGS.algo == "BERT4ETH":
-        embeddings = np.load("BERT4ETH/data/embedding_" + FLAGS.model_index + ".npy")
-        address_for_embedding = np.load("BERT4ETH/data/address_" + FLAGS.model_index + ".npy")
-
-    elif FLAGS.algo == "BERT4ETH_IOS":
-        embeddings = np.load("BERT4ETH_IOS/data/embedding_" + FLAGS.model_index + ".npy")
-        address_for_embedding = np.load("BERT4ETH_IOS/data/address_" + FLAGS.model_index + ".npy")
-
-    elif FLAGS.algo == "BERT4ETH_ERC":
-        embeddings = np.load("BERT4ETH_ERC/data/embedding_" + FLAGS.model_index + ".npy")
-        address_for_embedding = np.load("BERT4ETH_ERC/data/address_" + FLAGS.model_index + ".npy")
-
-    else:
-        raise ValueError("should choose right algo..")
+    checkpoint_name = FLAGS.init_checkpoint.split("/")[0]
+    model_index = str(FLAGS.init_checkpoint.split("/")[-1].split("_")[1])
+    embeddings = np.load("./inter_data/embedding_" + checkpoint_name + "_" + model_index + ".npy")
+    address_for_embedding = np.load("./inter_data/address_" + checkpoint_name + "_" + model_index + ".npy")
 
     # group by embedding according to address
     address_to_embedding = {}
+
     for i in range(len(address_for_embedding)):
         address = address_for_embedding[i]
         embedding = embeddings[i]
-        # if address not in exp_addr_set:
-        #     continue
         try:
             address_to_embedding[address].append(embedding)
         except:
@@ -176,6 +134,7 @@ def load_embedding():
 
     # final embedding table
     X = np.array(np.squeeze(embedding_list))
+
     return X, address_list
 
 def main():
@@ -234,7 +193,8 @@ def main():
     result["target_addr"] = result["target_idx"].apply(lambda x: idx_to_address[x])
     result.drop(["query_idx", "target_idx"], axis=1)
 
-    output_file = "data/" + FLAGS.algo + "_dean_ENS_" + FLAGS.model_index + ".csv"
+    model_index = str(FLAGS.init_checkpoint.split("/")[-1].split("_")[1])
+    output_file = "data/" + FLAGS.algo + "_dean_ENS_" + model_index + ".csv"
 
     result.to_csv(output_file, index=False)
 

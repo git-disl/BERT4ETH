@@ -113,44 +113,45 @@ python run_pretrain.py --bizdate=bert4eth_exp \
 
 #### Step 3: Output Representation
 
-
 ```sh
-python run_embed.py --bizdate=bert4eth_exp \ 
-                    --init_checkpoint=bert4eth_exp/model_104000 \  
-                    --max_seq_length=100 \
-                    --neg_sample_num=5000 \
-                    --neg_strategy=zip \
-                    --neg_share=True 
+python output_embed.py --bizdate=bert4eth_exp \
+                       --init_checkpoint=bert4eth_exp/model_104000 \
+                       --max_seq_length=100 \
+                       --neg_sample_num=5000 \
+                       --neg_strategy=zip \
+                       --neg_share=True
 ```
 
 ### Testing on the account representation
 
 #### Phishing Account Detection
 ```sh
-python run_phishing_detection.py --algo=bert4eth \
-                                 --model_index=XXX
+python run_phishing_detection.py --init_checkpoint=bert4eth_exp/model_104000 # Random Forest
 
+python run_phishing_detection_dnn.py --init_checkpoint=bert4eth_exp/model_104000 # DNN
 ```
 
 #### De-anonymization (ENS dataset)
 
 ```sh
 python run_dean_ENS.py --metric=euclidean \
-                       --algo=bert4eth \
-                       --model_index=XXX
+                       --init_checkpoint=bert4eth_exp/model_104000
 ```
 
+<!-- 
 #### De-anonymization (Tornado Cash)
 
 ```sh
+
 python run_dean_Tornado.py --metric=euclidean \
-                           --algo=bert4eth \
-                           --model_index=XXX
+
+                           --init_checkpoint=bert4eth_exp/model_104000
+
 ```
 
 ### Fine-tuning on the phishing account detection
-
 ```sh
+
 python gen_finetune_phisher_data.py --bizdate=bert4eth_exp \ 
                                     --max_seq_length=100 
 ```
@@ -160,6 +161,7 @@ python run_finetune_phisher.py --bizdate=bert4eth_exp \
                                --max_seq_length=100 \ 
                                --checkpointDir=tmp
 ```
+-->
 
 -----
 ## Citation
