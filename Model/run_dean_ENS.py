@@ -193,8 +193,9 @@ def main():
     result["target_addr"] = result["target_idx"].apply(lambda x: idx_to_address[x])
     result.drop(["query_idx", "target_idx"], axis=1)
 
+    checkpoint_name = FLAGS.init_checkpoint.split("/")[0]
     model_index = str(FLAGS.init_checkpoint.split("/")[-1].split("_")[1])
-    output_file = "data/" + FLAGS.algo + "_dean_ENS_" + model_index + ".csv"
+    output_file = "./inter_data/" + checkpoint_name + "_dean_ENS_" + model_index + ".csv"
 
     result.to_csv(output_file, index=False)
 

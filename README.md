@@ -148,6 +148,7 @@ python run_dean_Tornado.py --metric=euclidean \
                            --init_checkpoint=bert4eth_exp/model_104000
 
 ```
+-->
 
 ### Fine-tuning on the phishing account detection
 ```sh
@@ -157,11 +158,11 @@ python gen_finetune_phisher_data.py --bizdate=bert4eth_exp \
 ```
 
 ```sh
-python run_finetune_phisher.py --bizdate=bert4eth_exp \ 
+python run_finetune_phisher.py --init_checkpoint=bert4eth_exp/model_104000 \
+                               --bizdate=bert4eth_exp \ 
                                --max_seq_length=100 \ 
                                --checkpointDir=tmp
 ```
--->
 
 -----
 ## Citation

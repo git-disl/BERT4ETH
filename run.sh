@@ -36,7 +36,8 @@ CUDA_VISIBLE_DEVICES=3 python run_phishing_detection_dnn.py --init_checkpoint=be
 python gen_finetune_phisher_data.py --bizdate=bert4eth_exp \
                                     --max_seq_length=100
 
-CUDA_VISIBLE_DEVICES=3 python run_finetune_phisher.py --bizdate=bert4eth_exp \
+CUDA_VISIBLE_DEVICES=3 python run_finetune_phisher.py --init_checkpoint=bert4eth_exp/model_104000 \
+                                                      --bizdate=bert4eth_exp \
                                                       --max_seq_length=100 \
                                                       --checkpointDir=tmp
 
