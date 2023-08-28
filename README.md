@@ -122,7 +122,7 @@ python output_embed.py --bizdate=bert4eth_exp \
                        --neg_share=True
 ```
 
-I generated a version of [embedding file](https://drive.google.com/file/d/1mQgO1LalWhjeR064VhPRmkLl_ztSTroW/view?usp=sharing), you can unzip it under the directory of "Model/inter_data/".
+I have generated a version of [embedding file](https://drive.google.com/file/d/1mQgO1LalWhjeR064VhPRmkLl_ztSTroW/view?usp=sharing), you can unzip it under the directory of "Model/inter_data/".
 
 ### Testing on the account representation
 
