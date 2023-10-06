@@ -173,10 +173,11 @@ python run_finetune_phisher.py --init_checkpoint=bert4eth_exp/model_104000 \
 
 If you find this repository useful, please give us a star and cite our paper : ) Thank you!
 ```
-@article{hu2023bert4eth,
+@inproceedings{hu2023bert4eth,
   title={BERT4ETH: A Pre-trained Transformer for Ethereum Fraud Detection},
   author={Hu, Sihao and Zhang, Zhen and Luo, Bingqiao and Lu, Shengliang and He, Bingsheng and Liu, Ling},
-  journal={arXiv preprint arXiv:2303.18138},
+  booktitle={Proceedings of the ACM Web Conference 2023},
+  pages={2189--2197},
   year={2023}
 }
 ```
