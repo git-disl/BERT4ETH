@@ -12,7 +12,7 @@ Here you can find our [slides](https://github.com/git-disl/BERT4ETH/blob/master/
 * Python >= 3.6
 * TensorFlow >= 1.4.0
 
-I use python 3.9, tensorflow 2.9.2 with CUDA 11.2, numpy 1.19.5.
+I use python 3.9, tensorflow 2.9.2 with CUDA 11.2, numpy 1.19.5. Recently, I have been working on a PyTorch implementation for BERT4ETH: https://github.com/Bayi-Hu/BERT4ETH_PyTorch
 
 ### Preprocess dataset 
 
