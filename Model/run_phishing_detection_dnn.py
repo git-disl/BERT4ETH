@@ -27,7 +27,7 @@ class DNN(object):
     def __init__(self):
         # configuration
         self.model_config = {
-            "hidden": 128,
+            "hidden": 256,
             "learning_rate": 5e-4
         }
 

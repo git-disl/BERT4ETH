@@ -362,7 +362,7 @@ if __name__ == '__main__':
     flags.DEFINE_string("train_input_file", "./inter_data/finetune_train.tfrecord", "Input train file for finetuning")
     flags.DEFINE_string("test_input_file", "./inter_data/finetune_test.tfrecord", "Input test file for finetuning")
     flags.DEFINE_string("init_checkpoint", None, "Initial checkpoint (usually from a pre-trained BERT model).")
-    flags.DEFINE_integer("hidden_size", 128, "Hidden size for downside MLP.")
+    flags.DEFINE_integer("hidden_size", 256, "Hidden size for downside MLP.")
     flags.DEFINE_float("learning_rate", 3e-4, "")
     # flags.DEFINE_float("learning_rate", 1e-3, "")
     tf.app.run()
