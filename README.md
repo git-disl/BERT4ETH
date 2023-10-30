@@ -10,7 +10,7 @@ If you find this repository useful, please give us a star : ) Thank you!
 
 **Note 1:** The master branch hosts the basic BERT4ETH. If you wish to run the basic model, there is no need to download the ERC-20 log dataset. Advanced features such as In/out separation and ERC20 log can be found in the old branch but are not recommended due to the inefficiency of computation and memory.
 
-**Note 2:** Even though BERT4ETH is a sequential model, it is able to capture three-hop relationship from a graph perspective. (For more details please refer to our [slides](https://github.com/git-disl/BERT4ETH/blob/master/Material/BERT4ETH_WWW23_slides.pdf).)
+**Note 2:** Even though BERT4ETH is a sequential model, it is able to capture **three-hop** relationship from a graph perspective. (For more details please refer to our [slides](https://github.com/git-disl/BERT4ETH/blob/master/Material/BERT4ETH_WWW23_slides.pdf).)
 ![multi_hop_modeling.png](Material/multihop_modeling.png)
 
 **Note 3:** The results reported in our paper are the **best** results among **five** times experiments (pre-training). The outcomes might slightly vary between different runs of pre-training, steps of checkpoints, and runs of cascaded MLP classifier training. Below are our recent results on the phishing detection task with fixed training:
