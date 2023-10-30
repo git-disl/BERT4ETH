@@ -1,10 +1,20 @@
 # BERT4ETH
 
-I have reorganized the code and tested it recently. The code should be able to reproduce the results presented in the paper. (2023/08/27)
+This is the repo for the code and datasets used in the paper [BERT4ETH: A Pre-trained Transformer for Ethereum Fraud Detection](https://dl.acm.org/doi/abs/10.1145/3543507.3583345), accepted by the ACM Web conference (WWW) 2023. Here you can find our [slides](https://github.com/git-disl/BERT4ETH/blob/master/Material/BERT4ETH_WWW23_slides.pdf).
 
-This is the repo for the code and datasets used in the paper [BERT4ETH: A Pre-trained Transformer for Ethereum Fraud Detection](https://dl.acm.org/doi/abs/10.1145/3543507.3583345), accepted by the ACM Web conference (WWW) 2023.
 
-Here you can find our [slides](https://github.com/git-disl/BERT4ETH/blob/master/Material/BERT4ETH_WWW23_slides.pdf).
+If you find this repository useful, please give us a star : ) Thank you!
+
+
+### Some notes:
+
+**Note 1:** The master branch hosts the basic BERT4ETH. If you wish to run the basic model, there is no need to download the ERC-20 log dataset. Advanced features such as In/out separation and ERC20 log can be found in the old branch but are not recommended due to the inefficiency of computation and memory.
+
+**Note 2:** Even though BERT4ETH is a sequential model, it is able to capture three-hop relationship from a graph perspective. (For more details please refer to our [slides](https://github.com/git-disl/BERT4ETH/blob/master/Material/BERT4ETH_WWW23_slides.pdf).)
+![multi_hop_modeling.png](Material/multi_hop_modeling.png)
+
+**Note 3:** The results reported in our paper are the **best** results among **five** times experiments (pre-training). The outcomes might slightly vary between different runs of pre-training, steps of checkpoints, and runs of cascaded MLP classifier training. Below are our recent results on the phishing detection task with fixed training and fine-tuning.
+![phishing_results.png](Material/phishing_results.png)
 
 ## Getting Start
 
@@ -12,7 +22,7 @@ Here you can find our [slides](https://github.com/git-disl/BERT4ETH/blob/master/
 * Python >= 3.6
 * TensorFlow >= 2
 
-I use python 3.9, tensorflow 2.9.2 with CUDA 11.2, numpy 1.19.5. 
+I use python 3.9, tensorflow 2.9.2 with CUDA 11.2, numpy 1.19.5.
 
 ### Preprocess dataset 
 
@@ -28,9 +38,6 @@ I use python 3.9, tensorflow 2.9.2 with CUDA 11.2, numpy 1.19.5.
 
 * [ERC-20 Log Dataset (all in one)](https://drive.google.com/file/d/1mB2Tf7tMq5ApKKOVdctaTh2UZzzrAVxq/view?usp=sharing)
 
-The master branch hosts the basic BERT4ETH model. If you wish to run the basic BERT4ETH model, there is no need to download the ERC-20 log dataset. Advanced features such as In/out separation and ERC20 log can be found in the old branch but are not recommended due to inefficiency of computation.
-
-The results reported in our paper are the best results among five times experiments (pre-training). The outcomes might slightly vary between different runs of pre-training, different checkpoint steps, and the training of cascaded MLP classifier.
 
 #### Step 2: Unzip dataset under the directory of "BERT4ETH/Data/" 
 
@@ -173,7 +180,6 @@ python run_finetune_phisher.py --init_checkpoint=bert4eth_exp/model_104000 \
 -----
 ## Citation
 
-If you find this repository useful, please give us a star and cite our paper : ) Thank you!
 ```
 @inproceedings{hu2023bert4eth,
   title={BERT4ETH: A Pre-trained Transformer for Ethereum Fraud Detection},
