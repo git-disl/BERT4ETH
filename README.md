@@ -10,9 +10,9 @@ Here you can find our [slides](https://github.com/git-disl/BERT4ETH/blob/master/
 
 ### Requirements
 * Python >= 3.6
-* TensorFlow >= 1.4.0
+* TensorFlow >= 2
 
-I use python 3.9, tensorflow 2.9.2 with CUDA 11.2, numpy 1.19.5. Recently, I have been working on a PyTorch implementation for BERT4ETH: https://github.com/Bayi-Hu/BERT4ETH_PyTorch
+I use python 3.9, tensorflow 2.9.2 with CUDA 11.2, numpy 1.19.5. 
 
 ### Preprocess dataset 
 
@@ -28,7 +28,9 @@ I use python 3.9, tensorflow 2.9.2 with CUDA 11.2, numpy 1.19.5. Recently, I hav
 
 * [ERC-20 Log Dataset (all in one)](https://drive.google.com/file/d/1mB2Tf7tMq5ApKKOVdctaTh2UZzzrAVxq/view?usp=sharing)
 
-The master branch hosts the basic BERT4ETH model. If you wish to run the basic BERT4ETH model, there is no need to download the ERC-20 log dataset. Advanced features such as In/out separation and ERC20 log can be found in the old branch.
+The master branch hosts the basic BERT4ETH model. If you wish to run the basic BERT4ETH model, there is no need to download the ERC-20 log dataset. Advanced features such as In/out separation and ERC20 log can be found in the old branch but are not recommended due to inefficiency of computation.
+
+The results reported in our paper are the best results among five times experiments (pre-training). The outcomes might slightly vary between different runs of pre-training, different checkpoint steps, and the training of cascaded MLP classifier.
 
 #### Step 2: Unzip dataset under the directory of "BERT4ETH/Data/" 
 
