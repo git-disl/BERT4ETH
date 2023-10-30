@@ -14,7 +14,7 @@ If you find this repository useful, please give us a star : ) Thank you!
 ![multi_hop_modeling.png](Material/multi_hop_modeling.png)
 
 **Note 3:** The results reported in our paper are the **best** results among **five** times experiments (pre-training). The outcomes might slightly vary between different runs of pre-training, steps of checkpoints, and runs of cascaded MLP classifier training. Below are our recent results on the phishing detection task with fixed training and fine-tuning.
-![phishing_results.png](Material/phishing_results.png)
+![phishing_results.png](Material/20231030-135713.png)
 
 ## Getting Start
 
