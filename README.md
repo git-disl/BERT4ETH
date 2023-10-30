@@ -16,7 +16,7 @@ If you find this repository useful, please give us a star : ) Thank you!
 **Note 3:** The results reported in our paper are the **best** results among **five** times experiments (pre-training). The outcomes might slightly vary between different runs of pre-training, steps of checkpoints, and runs of cascaded MLP classifier training. Below are our recent results on the phishing detection task with fixed training:
 
 <p align="center">
-<img src="Material/phishing_results.png" width="600" />
+<img src="Material/phishing_exp.png" width="600" />
 </p>
 
 [//]: # (![phishing_exp.png]&#40;Material/phishing_exp.png&#41;)
