@@ -11,9 +11,7 @@ tf.disable_v2_behavior()
 flags = tf.flags
 FLAGS = flags.FLAGS
 flags.DEFINE_string("metric", "euclidean", "")
-flags.DEFINE_string("ens_dataset", "../Data/dean_all_ens_pairs.csv", "")
-flags.DEFINE_string("algo", "", "algorithm for embedding generation" )
-flags.DEFINE_string("model_index", None, "model index")
+flags.DEFINE_string("init_checkpoint", None, "Initial checkpoint (usually from a pre-trained BERT model).")
 flags.DEFINE_integer("max_cnt", 2, "")
 
 
@@ -174,20 +172,14 @@ class TornadoQueries():
 
 def load_embedding():
 
-    if FLAGS.algo == "BERT4ETH":
-        embeddings = np.load("BERT4ETH/data/embedding_" + FLAGS.model_index + ".npy")
-        address_for_embedding = np.load("BERT4ETH/data/address_" + FLAGS.model_index + ".npy")
+    # must have checkpoint
+    if FLAGS.init_checkpoint == None:
+        raise ValueError("Must need a checkpoint for evaluation")
 
-    elif FLAGS.algo == "BERT4ETH_IOS":
-        embeddings = np.load("BERT4ETH_IOS/data/embedding_" + FLAGS.model_index + ".npy")
-        address_for_embedding = np.load("BERT4ETH_IOS/data/address_" + FLAGS.model_index + ".npy")
-
-    elif FLAGS.algo == "BERT4ETH_ERC":
-        embeddings = np.load("BERT4ETH_ERC/data/embedding_" + FLAGS.model_index + ".npy")
-        address_for_embedding = np.load("BERT4ETH_ERC/data/address_" + FLAGS.model_index + ".npy")
-
-    else:
-        raise ValueError("should choose right algo..")
+    checkpoint_name = FLAGS.init_checkpoint.split("/")[0]
+    model_index = str(FLAGS.init_checkpoint.split("/")[-1].split("_")[1])
+    embeddings = np.load("./inter_data/embedding_" + checkpoint_name + "_" + model_index + ".npy")
+    address_for_embedding = np.load("./inter_data/address_" + checkpoint_name + "_" + model_index + ".npy")
 
     # group by embedding according to address
     address_to_embedding = {}
@@ -297,8 +289,10 @@ def main():
     print(tornado_perf_median)
 
     # EXPORT
+    checkpoint_name = FLAGS.init_checkpoint.split("/")[0]
+    model_index = str(FLAGS.init_checkpoint.split("/")[-1].split("_")[1])
+    output_file = "./inter_data/" + checkpoint_name + "_dean_Tornado_" + model_index + ".csv"
 
-    output_file = "data/" + FLAGS.algo + "_dean_Tornado_" + FLAGS.model_index + ".csv"
     tornado_result.to_csv(output_file, index=False)
 
 

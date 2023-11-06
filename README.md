@@ -156,17 +156,14 @@ python run_dean_ENS.py --metric=euclidean \
                        --init_checkpoint=bert4eth_exp/model_104000
 ```
 
-<!-- 
 #### De-anonymization (Tornado Cash)
 
 ```sh
 
 python run_dean_Tornado.py --metric=euclidean \
-
                            --init_checkpoint=bert4eth_exp/model_104000
 
 ```
--->
 
 ### Fine-tuning for phishing account detection
 ```sh
