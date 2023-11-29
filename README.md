@@ -7,7 +7,7 @@ If you find this repository useful, please give us a star : ) Thank you!
 Update: I've recently added a section (Section 5.5) discussing the multi-hop modeling capability of BERT4ETH to the paper on arXiv. (10/30)
 
 
-Update: Here you can find the PyTorch implementation: https://github.com/Bayi-Hu/BERT4ETH_PyTorch
+**BERT4ETH-PyTorch**: Here you can find the PyTorch implementation: https://github.com/Bayi-Hu/BERT4ETH_PyTorch
 
 
 ### Some notes:
