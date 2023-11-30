@@ -1,6 +1,6 @@
 # BERT4ETH
 
-This is the repo for the code and datasets used in the paper [BERT4ETH: A Pre-trained Transformer for Ethereum Fraud Detection](https://arxiv.org/abs/2303.18138), accepted by the ACM Web conference (WWW) 2023. Here you can find our [slides](https://github.com/git-disl/BERT4ETH/blob/master/Material/BERT4ETH_WWW23_slides.pdf).
+This is the repo for the code (TensorFlow version) and datasets used in the paper [BERT4ETH: A Pre-trained Transformer for Ethereum Fraud Detection](https://arxiv.org/abs/2303.18138), accepted by the ACM Web conference (WWW) 2023. Here you can find our [slides](https://github.com/git-disl/BERT4ETH/blob/master/Material/BERT4ETH_WWW23_slides.pdf).
 
 If you find this repository useful, please give us a star : ) Thank you!
 
