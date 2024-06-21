@@ -437,7 +437,6 @@ def get_masked_lm_output_negative_sampling(bert_config, input_tensor, output_wei
     return (loss, per_example_loss, log_probs)
 
 
-
 def get_masked_lm_output_negative_sampling_unshare(bert_config, input_tensor, output_weights, positions,
                                                    label_ids, label_weights, vocab):
     """Get loss and log probs for the masked LM."""
